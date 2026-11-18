@@ -1,0 +1,305 @@
+# ===========================================================================
+# ps2-native-recomp / Onimusha 2 Android port
+# Hybrid Android Studio (Gradle + NDK/CMake) and native C++ (SDL2/GLES/GLSL)
+# ===========================================================================
+#
+# Rule of thumb: source, shaders and configuration stay; disc images, derived
+# game data, build outputs, caches, logs and local secrets never enter git.
+#
+# Keep tracked:
+#   *.c *.cc *.cpp *.cxx *.h *.hpp *.inl
+#   *.glsl *.vert *.frag *.comp *.geom *.tesc *.tese *.wgsl *.hlsl *.metal
+#   CMakeLists.txt *.cmake
+#   *.gradle *.gradle.kts gradle.properties settings.gradle.kts
+#   AndroidManifest.xml *.xml *.json *.md *.txt *.yml *.yaml
+#
+# ---------------------------------------------------------------------------
+# Game images, executables and copyrighted data
+# ---------------------------------------------------------------------------
+# Disc images (Onimusha 2 is 3.78 GB; never commit it).
+*.iso
+*.ISO
+*.chd
+*.CHD
+*.cso
+*.CSO
+*.cue
+*.CUE
+*.img
+*.IMG
+*.mdf
+*.MDF
+*.mds
+*.MDS
+*.nrg
+*.NRG
+
+# Raw game payloads, overlays, extracted RAM and PS2 modules.
+*.bin
+*.BIN
+*.elf
+*.ELF
+*.irx
+*.IRX
+*.pss
+*.PSS
+*.adp
+*.ADP
+*.vag
+*.VAG
+*.ss2
+*.SS2
+*.spu
+*.SPU
+*.mpeg
+*.MPEG
+*.mpg
+*.MPG
+*.bik
+*.BIK
+
+# The executable named by the user and any disassembly derived from it.
+SLUS_203.93
+SLUS_203.93;1
+SLUS_203.93.*
+SLUS_*.???
+
+# The Ghidra export requested alongside the source is the only allowed
+# SLUS_203.93 artifact; raw game executables remain ignored.
+!android/port/ghidra/**/*.gzf
+
+# Local game dumps, analysis trees and translated game code.
+# They contain the game's copyrighted bytes, overlays and derived work.
+/games/
+/isos/
+/inis/
+*.pnach
+
+# Memory cards, save states and crash dumps from a running game.
+*.ps2
+*.PS2
+*.mcd
+*.MCD
+*.mc2
+*.MC2
+*.sav
+*.SAV
+*.state
+*.STATE
+*.sstate
+*.SSTATE
+*.dmp
+*.DMP
+*.core
+crash_log.txt
+quickstate.qs
+memcard0/
+
+# Captures, recordings and extracted audio/video (the runner writes these).
+*.ppm
+*.PPM
+*.wav
+*.WAV
+*.mp3
+*.MP3
+*.ogg
+*.OGG
+*.flac
+*.FLAC
+*.opus
+*.OPUS
+*.png
+*.PNG
+*.jpg
+*.JPG
+*.jpeg
+*.JPEG
+*.gif
+*.GIF
+*.bmp
+*.BMP
+*.webp
+*.WEBP
+*.mp4
+*.MP4
+*.webm
+*.WEBM
+*.avi
+*.AVI
+*.mkv
+*.MKV
+
+# Android app resources are source, not game captures.
+!android/**/src/main/res/**/*.png
+!android/**/src/main/res/**/*.webp
+!android/**/src/main/res/**/*.jpg
+!android/**/src/main/res/**/*.jpeg
+!android/apk/res/**/*.png
+!android/apk/res/**/*.webp
+!android/apk/res/**/*.jpg
+!android/apk/res/**/*.jpeg
+
+# ---------------------------------------------------------------------------
+# Android Studio / Gradle
+# ---------------------------------------------------------------------------
+.gradle/
+**/.gradle/
+.idea/
+**/.idea/
+*.iml
+*.ipr
+*.iws
+.navigation/
+captures/
+.externalNativeBuild/
+**/.externalNativeBuild/
+.cxx/
+**/.cxx/
+**/build/
+build/
+app/build/
+app/.cxx/
+out/
+cmake-build-*/
+
+# Android application outputs.
+*.apk
+*.APK
+*.aab
+*.AAB
+*.apks
+*.APKS
+*.idsig
+*.ap_
+*.apk.idsig
+native-debug-symbols.zip
+*.hprof
+lint-results*
+*.sarif
+
+# Local SDK path and signing material. Never publish these.
+local.properties
+keystore.properties
+!keystore.properties.example
+secrets.properties
+*.jks
+*.JKS
+*.keystore
+*.p12
+*.P12
+*.pem
+*.PEM
+*.key
+*.KEY
+*.cer
+*.CER
+*.der
+*.DER
+*.bks
+*.store
+.env
+.env.*
+google-services.json
+
+# Gradle wrapper JAR must stay committed so ./gradlew works on a clone.
+*.jar
+!**/gradle/wrapper/gradle-wrapper.jar
+
+# ---------------------------------------------------------------------------
+# NDK / CMake / native build outputs
+# ---------------------------------------------------------------------------
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+.ninja_deps
+.ninja_log
+build.ninja
+*.ninja
+
+*.o
+*.obj
+*.lo
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+*.out
+*.wasm
+*.pdb
+*.ilk
+*.exp
+*.d
+*.gcda
+*.gcno
+*.profraw
+*.sym
+
+# The Android port needs this prebuilt open-source SDL2 library to package
+# libmain.so; it is not a game asset.
+!android/port/android-project/app/src/main/jniLibs/**/*.so
+
+# Third-party build products. Sources under third_party/imgui are kept.
+/third_party/wgpu-native/
+/third_party/wgpu-native-android/
+/third_party/sdl2/
+/third_party/dxc/
+
+# ---------------------------------------------------------------------------
+# Tools, generated files and caches
+# ---------------------------------------------------------------------------
+/tools/
+/generated/
+/build/
+*.zip
+*.7z
+*.rar
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.ccache/
+.clangd/
+.cache/
+
+# ---------------------------------------------------------------------------
+# Logs, temporary files and OS/IDE junk
+# ---------------------------------------------------------------------------
+*.log
+*.LOG
+hs_err_pid*
+replay_pid*
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+.directory
+.fuse_hidden*
+.vscode/
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Per-lane worktrees and old local clones.
+/wt/
+/ps2-web-recomp/
+
+# Android hand-built APK workspace: assets contain extracted game data and
+# work/ contains generated classes, dex and native libraries.
+/android/apk/assets/
+/android/apk/work/
+/android/logs/
+/android/port/shots/

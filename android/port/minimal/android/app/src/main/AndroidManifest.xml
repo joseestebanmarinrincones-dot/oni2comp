@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.ps2native.recomp">
+
+    <uses-sdk
+        android:minSdkVersion="29"
+        android:targetSdkVersion="34" />
+
+    <!-- OpenGL ES 3.0 obligatorio -->
+    <uses-feature
+        android:glEsVersion="0x00030000"
+        android:required="true" />
+
+    <application
+        android:label="Onimusha Port"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
+        <!-- sensorLandscape: horizontal, permitiendo girar 180°. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
