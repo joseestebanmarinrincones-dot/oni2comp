@@ -13,6 +13,10 @@ ISO, ELF, APK con código del juego ni export de Ghidra.
 Necesitas tu propio disco de Onimusha 2. El código generado a partir del juego
 (`generated/`, ISO, ELF y APK) queda fuera del repositorio.
 
+Estado: verificado en PC (idioma, 50 Hz, menú e introducción con subtítulos en
+español) y en Android (aviso y pantalla de título, 512x448). Todavía no se ha
+completado una partida entera.
+
 ## Base
 
 Turns a PS2 game disc you own into a native Windows or Linux program by static recompilation: the code of the PS2's

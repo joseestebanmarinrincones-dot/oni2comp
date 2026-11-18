@@ -48,6 +48,15 @@ hardware; las capturas `--frames-dir` del propio runtime confirman el contenido.
 El resultado queda en `generated/onimusha2-pal/`, que está ignorado por git
 porque es código derivado de un disco del usuario.
 
+Si aún no tienes `build\tools\eerecomp.exe`, compila las herramientas:
+
+```powershell
+cmake -S . -B build/tools -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build/tools --target eerecomp vurecomp -j
+```
+
+Después extrae el ejecutable y tradúcelo:
+
 ```powershell
 python scripts/disc.py extract "C:\ruta\Onimusha 2 SD.iso" `
   "games\onimusha2-pal\disc" "SLES_509.78" "SYSTEM.CNF"
