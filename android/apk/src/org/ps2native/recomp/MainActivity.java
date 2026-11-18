@@ -110,7 +110,7 @@ public class MainActivity extends SDLActivity {
             }
             if (!saidStorage) {
                 saidStorage = true;
-                Toast.makeText(this, "Dale a PS2 Native acceso a todos los archivos para leer el juego y crear la tarjeta de memoria.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Dale a Oni2comp acceso a todos los archivos para leer el juego y crear la tarjeta de memoria.", Toast.LENGTH_LONG).show();
                 try {
                     startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:" + getPackageName())));
                 } catch (Exception e) {
@@ -160,33 +160,47 @@ public class MainActivity extends SDLActivity {
 
     private static native void nativeToggleMenu();
 
-    // The image is all the game needs: the boot ELF travels inside it and the runtime reads it. A Spanish/PAL image is preferred
-    // when it is there (the US SLUS release is English only); then the usual Onimusha2.iso, then any Onimusha ISO.
+    // The image is all the game needs: the boot ELF travels inside it and the runtime reads it. The player can drop any
+    // .iso into /sdcard/Oni2comp/; a PAL/Spanish ISO in the shared storage or Download folder is preferred too.
     private String findIso() {
         final File storage = Environment.getExternalStorageDirectory();
-        final File[] files = storage.listFiles();
-        if (files != null) {
-            File spanish = null;
+
+        final File drop = new File(storage, "Oni2comp");
+        final File dropped = firstIso(drop);
+        if (dropped != null) return dropped.getAbsolutePath();
+
+        File onimusha = null;
+        final File[] roots = new File[] { storage, new File(storage, "Download") };
+        for (File dir : roots) {
+            final File[] files = dir.listFiles();
+            if (files == null) continue;
             for (File file : files) {
+                if (!file.isFile()) continue;
                 final String name = file.getName().toLowerCase();
-                if (!file.isFile() || !name.endsWith(".iso")) continue;
-                if (name.contains("espa") || name.contains("spanish") || name.contains("spain") || name.contains("_s.") ||
-                    name.contains("pal") || name.contains("sles")) {
-                    spanish = file;
-                    break;
+                if (!name.endsWith(".iso")) continue;
+                if (name.contains("espa") || name.contains("spanish") || name.contains("spain") ||
+                    name.contains("_s.") || name.contains("pal") || name.contains("sles")) {
+                    return file.getAbsolutePath();
                 }
-            }
-            if (spanish != null) return spanish.getAbsolutePath();
-            final File named = new File(storage, "Onimusha2.iso");
-            if (named.isFile()) return named.getAbsolutePath();
-            for (File file : files) {
-                final String name = file.getName().toLowerCase();
-                if (file.isFile() && name.contains("onimusha") && name.endsWith(".iso")) return file.getAbsolutePath();
+                if (onimusha == null && name.contains("onimusha")) onimusha = file;
             }
         }
+        if (onimusha != null) return onimusha.getAbsolutePath();
+
         final File named = new File(storage, "Onimusha2.iso");
-        Toast.makeText(this, "No encontré una ISO de Onimusha en /sdcard. Copiá Onimusha2.iso o una ISO PAL/ES a la memoria interna.", Toast.LENGTH_LONG).show();
+        if (named.isFile()) return named.getAbsolutePath();
+
+        Toast.makeText(this, "Copia tu ISO a /sdcard/Oni2comp/ (cualquier nombre) o a /sdcard/Onimusha2.iso, y vuelve a abrir Oni2comp.", Toast.LENGTH_LONG).show();
         return named.getAbsolutePath();
+    }
+
+    private File firstIso(File dir) {
+        final File[] files = dir.listFiles();
+        if (files == null) return null;
+        for (File file : files) {
+            if (file.isFile() && file.getName().toLowerCase().endsWith(".iso")) return file;
+        }
+        return null;
     }
 
     @Override
@@ -194,8 +208,10 @@ public class MainActivity extends SDLActivity {
         // A test can pass a whole argument list with `am start ... --esa ps2_args ...` (and `adb` uses it to replay a run).
         final String[] extra = getIntent().getStringArrayExtra("ps2_args");
         if (extra != null && extra.length > 0) return extra;
+        final String iso = findIso();
+        Log.i("ps2native", "ISO: " + iso);
         return new String[] {
-            "--disc", findIso(),
+            "--disc", iso,
             "--memcard", new File(Environment.getExternalStorageDirectory(), CARD_NAME).getAbsolutePath(),
             "--fullscreen"
         };

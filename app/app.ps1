@@ -21,7 +21,7 @@ $ProgressPreference = 'SilentlyContinue'
 $Root = Split-Path -Parent $PSScriptRoot
 $ToolsDir = Join-Path $Root 'tools\portable'
 $GamesDir = Join-Path $Root 'games'
-$AppTitle = 'PS2 Native Recomp'
+$AppTitle = 'Oni2comp'
 $ToolsDownloadMb = 312   # portable.ps1 (284 MB) + wgpu-native (15 MB) + SDL2 (14 MB), see docs\portable.md
 
 function Write-AppLog([string]$text) {
@@ -699,7 +699,7 @@ function Install-Update([string]$sha) {
 $created = $false
 $Mutex = New-Object Threading.Mutex($true, ('Local\Ps2NativeRecompApp_' + ($Root.ToLower() -replace '[^a-z0-9]', '_')), [ref]$created)
 if (-not $created) {
-    [void][Windows.Forms.MessageBox]::Show('PS2 Native Recomp is already open. Look for its window in the taskbar.', $AppTitle, 'OK', 'Information')
+    [void][Windows.Forms.MessageBox]::Show('Oni2comp is already open. Look for its window in the taskbar.', $AppTitle, 'OK', 'Information')
     exit 0
 }
 

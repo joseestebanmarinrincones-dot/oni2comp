@@ -5,6 +5,7 @@ Port nativo de **Onimusha 2: Samurai's Destiny** para Android y PC, basado en
 el ejecutable de tu propio disco a C++ y lo ejecuta de forma nativa; no incluye
 ISO, ELF, APK con código del juego ni export de Ghidra.
 
+- **App Windows y Android:** [docs/oni2comp-app.md](docs/oni2comp-app.md)
 - **Android PAL/español (SLES_509.78)**: [docs/onimusha2-pal.md](docs/onimusha2-pal.md)
 - **Android NTSC (SLUS_203.93)**: [android/port/README.md](android/port/README.md)
 - **PC**: `scripts/port.sh <nombre> "ruta\al\juego.iso"` o las instrucciones de
@@ -16,6 +17,15 @@ Necesitas tu propio disco de Onimusha 2. El código generado a partir del juego
 Estado: verificado en PC (idioma, 50 Hz, menú e introducción con subtítulos en
 español) y en Android (aviso y pantalla de título, 512x448). Todavía no se ha
 completado una partida entera.
+
+## Apps
+
+- **Windows:** `Oni2comp-portable.zip` desde
+  [Releases](https://github.com/joseestebanmarinrincones-dot/oni2comp/releases/latest).
+  Descomprime, ejecuta `Oni2comp.exe`, elige tu ISO y pulsa Build/Play.
+- **Android:** `Oni2comp.apk`, generado desde tu propio ISO con
+  `android\apk\build-pal.ps1`. Copia el ISO a `/sdcard/Oni2comp/` e instala el
+  APK. Instrucciones: [docs/oni2comp-app.md](docs/oni2comp-app.md).
 
 ## Base
 

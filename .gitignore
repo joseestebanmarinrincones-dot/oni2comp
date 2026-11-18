@@ -303,3 +303,7 @@ CLAUDE.local.md
 /android/apk/work/
 /android/logs/
 /android/port/shots/
+
+# Portable app output and the folder where users drop their own disc image.
+/dist/
+/isos/
