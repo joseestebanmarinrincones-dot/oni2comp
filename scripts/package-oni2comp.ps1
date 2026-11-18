@@ -24,7 +24,7 @@ foreach ($file in @('LICENSE', 'README.md', 'Start.cmd', 'CMakeLists.txt')) {
 Copy-Item -LiteralPath (Join-Path $root 'launcher\Oni2comp.exe') -Destination $target -Force
 Copy-Item -LiteralPath (Join-Path $root 'launcher\Oni2comp.ico') -Destination $target -Force
 
-foreach ($dir in @('app', 'scripts', 'runtime', 'recomp', 'host', 'cmake', 'docs')) {
+foreach ($dir in @('app', 'scripts', 'runtime', 'recomp', 'host', 'cmake', 'docs', 'tests')) {
     Copy-Item -LiteralPath (Join-Path $root $dir) -Destination (Join-Path $target $dir) -Recurse -Force
 }
 
