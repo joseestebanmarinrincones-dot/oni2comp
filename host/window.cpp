@@ -2040,6 +2040,13 @@ bool open_window(bool fullscreen) {
     percent_env("PS2_AA_STRENGTH", g_aa_strength, g_aa_forced);
     load_keys();
 #ifdef __ANDROID__
+    // A 30 FPS cap left by an older build halves the PAL speed. The phone build
+    // runs at the console speed unless the caller forced another limit.
+    if (!g_fps_forced && g_fps_limit.load(std::memory_order_relaxed) == 30) {
+        g_fps_limit.store(keymap::kFpsConsole, std::memory_order_relaxed);
+        g_fps_forced = true;
+        std::fprintf(stderr, "[pace] Android: 30 FPS cap ignored, console speed\n");
+    }
     // The default sharp_edges is the heaviest of the cheap looks, and a phone's GPU is usually the slow part (Mali-G57 here).
     // Unless PS2_LOOK says otherwise or the player chose another look in keys.ini, start with crisp.
     if (ps2::os::env("PS2_LOOK").empty() && !g_look_forced && g_keys.look == 5) {
