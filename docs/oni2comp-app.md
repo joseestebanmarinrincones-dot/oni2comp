@@ -55,6 +55,14 @@ La app busca primero cualquier `.iso` en `/sdcard/Oni2comp/`; después una ISO
 PAL/española en `/sdcard` o `/sdcard/Download`, y por último
 `/sdcard/Onimusha2.iso`.
 
+## Rendimiento en Android
+
+El APK 1.3 fuerza la velocidad de consola (50 Hz en el disco PAL) y lleva los
+microprogramas VU1 compilados. Antes podía heredar un `keys.ini` con
+`fps_limit = 30`, que lo dejaba a 30 FPS; ahora `PS2_FPS_LIMIT=console` manda
+sobre ese archivo. Si el teléfono no llega a 50, el siguiente paso es bajar la
+resolución interna o el estilo de imagen desde el menú (F1/MENU).
+
 ## Corrección del cierre en la parte de historia
 
 El runtime se detenía al entrar en la historia porque faltaban funciones del

@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.system.Os;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.View;
@@ -49,6 +50,9 @@ public class MainActivity extends SDLActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // The phone build always runs at the console speed (50 Hz on the PAL
+        // disc). A keys.ini left by another build used to cap it at 30.
+        try { Os.setenv("PS2_FPS_LIMIT", "console", true); } catch (Throwable ignored) { }
         super.onCreate(savedInstanceState);
         prepareStorage();
         virtualPad = new VirtualPadView(this);
