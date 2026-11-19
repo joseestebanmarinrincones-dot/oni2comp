@@ -55,6 +55,15 @@ La app busca primero cualquier `.iso` en `/sdcard/Oni2comp/`; después una ISO
 PAL/española en `/sdcard` o `/sdcard/Download`, y por último
 `/sdcard/Onimusha2.iso`.
 
+## Corrección del cierre en la parte de historia
+
+El runtime se detenía al entrar en la historia porque faltaban funciones del
+programa PAL (`0x00292B20`, `0x00292B50`, `0x0029310C`, ...) y tres overlays
+(`01F64000_10BB0490`, `01F70000_27F5BFB1`, `01F90000_A2BB43DF`, ...). Se
+generaron las entradas y las imágenes de overlay completas; la prueba en PC
+pasó 15.000 frames sin `missing code` y mostró la escena con subtítulos en
+español. El APK 1.2 incluye esa traducción.
+
 ## Aviso
 
 El APK contiene código recompilado de la versión PAL. Distribúyelo solo a

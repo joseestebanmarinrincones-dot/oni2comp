@@ -15,8 +15,10 @@ Necesitas tu propio disco de Onimusha 2. El código generado a partir del juego
 (`generated/`, ISO, ELF y APK) queda fuera del repositorio.
 
 Estado: verificado en PC (idioma, 50 Hz, menú e introducción con subtítulos en
-español) y en Android (aviso y pantalla de título, 512x448). Todavía no se ha
-completado una partida entera.
+español) y en Android (aviso y pantalla de título, 512x448). Corregido el cierre
+al entrar en la parte de historia (faltaban funciones y overlays PAL); la prueba
+en PC pasó 15.000 frames sin `missing code`. Todavía no se ha completado una
+partida entera.
 
 ## Apps
 

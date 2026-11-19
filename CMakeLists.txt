@@ -93,7 +93,7 @@ else()
         # are embedded in the runner as well.
         target_sources(ps2runtime PRIVATE recomp/eerecomp_gen.cpp recomp/codegen.cpp recomp/analysis.cpp recomp/r5900.cpp recomp/elf.cpp recomp/snr2.cpp)
         target_include_directories(ps2runtime PRIVATE recomp)
-        foreach(entry "cpu:Cpu" "fpu:Fpu" "vu:Vu" "vu_ops:VuOps" "memory:Memory" "mmi:Mmi" "generated:Generated" "ee_live_abi:EeLiveAbi")
+        foreach(entry "cpu:Cpu" "fpu:Fpu" "vu:Vu" "vu_ops:VuOps" "memory:Memory" "mmi:Mmi" "generated:Generated" "ee_live_abi:EeLiveAbi" "compat:Compat")
             string(REPLACE ":" ";" pair "${entry}")
             list(GET pair 0 hdr)
             list(GET pair 1 sym)

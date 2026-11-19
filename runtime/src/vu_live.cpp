@@ -36,7 +36,7 @@ std::vector<Program> take() { return {}; }
 
 // The headers the generated code includes, embedded in the runner (cmake/embed.cmake) so the library is compiled against exactly the
 // layouts this runner has, whatever sits next to it.
-extern const char kLiveHdrCpu[], kLiveHdrFpu[], kLiveHdrVu[], kLiveHdrVuOps[];
+extern const char kLiveHdrCpu[], kLiveHdrFpu[], kLiveHdrVu[], kLiveHdrVuOps[], kLiveHdrCompat[];
 
 namespace fs = std::filesystem;
 namespace lb = ::ps2::live;  // what vector programs and main processor code share: compiler, processes, libraries (live_build.cpp)
@@ -274,7 +274,7 @@ void start(const std::string &cache) {
     // The stamp says which libraries this runner may load: the generator, the headers and the flags that went into them.
     std::uint64_t h = 0xCBF29CE484222325ull;
     h = fnv(h, vurecomp::kGeneratorVersion, std::strlen(vurecomp::kGeneratorVersion));
-    for (const char *text : {kLiveHdrCpu, kLiveHdrFpu, kLiveHdrVu, kLiveHdrVuOps}) h = fnv(h, text, std::strlen(text));
+    for (const char *text : {kLiveHdrCpu, kLiveHdrFpu, kLiveHdrVu, kLiveHdrVuOps, kLiveHdrCompat}) h = fnv(h, text, std::strlen(text));
     for (const std::string &f : g->flags) h = fnv(h, f.data(), f.size() + 1);
     const std::size_t regs = sizeof(Vu0Regs);
     h = fnv(h, &regs, sizeof regs);
@@ -312,7 +312,7 @@ void start(const std::string &cache) {
     say("compiling vector programs the build does not know with %s, into %s", ps2::os::utf8(g->compiler).c_str(), cache.c_str());
     std::atexit(stop);  // (lb::stop_all() is registered by the toolchain itself; this also wakes the worker)
     std::thread([] {
-        if (!lb::write_headers(g->cache / "include", {{"cpu.hpp", kLiveHdrCpu}, {"fpu.hpp", kLiveHdrFpu}, {"vu.hpp", kLiveHdrVu}, {"vu_ops.hpp", kLiveHdrVuOps}})) {
+        if (!lb::write_headers(g->cache / "include", {{"cpu.hpp", kLiveHdrCpu}, {"fpu.hpp", kLiveHdrFpu}, {"vu.hpp", kLiveHdrVu}, {"vu_ops.hpp", kLiveHdrVuOps}, {"compat.hpp", kLiveHdrCompat}})) {
             say("cannot write into %s: no vector programs are built", ps2::os::utf8(g->cache).c_str());
             std::lock_guard lock(g->mutex);
             g->worker = false;

@@ -43,7 +43,7 @@ void frame_tick() {}
 
 // The headers the generated code includes, embedded in the runner (cmake/embed.cmake) so the library is compiled against exactly the
 // layouts this runner has, whatever sits next to it.
-extern const char kLiveHdrCpu[], kLiveHdrFpu[], kLiveHdrVu[], kLiveHdrMemory[], kLiveHdrMmi[], kLiveHdrGenerated[], kLiveHdrEeLiveAbi[];
+extern const char kLiveHdrCpu[], kLiveHdrFpu[], kLiveHdrVu[], kLiveHdrMemory[], kLiveHdrMmi[], kLiveHdrGenerated[], kLiveHdrEeLiveAbi[], kLiveHdrCompat[];
 
 namespace lb = ::ps2::live;
 namespace fs = std::filesystem;
@@ -450,7 +450,7 @@ Built build_library(recomp::LiveRequest request, const std::string &what, bool b
     fs::create_directories(src, error);
     {
         std::lock_guard lock(g->prep_mutex);
-        if (error || !(g->headers = g->headers || lb::write_headers(g->cache / "include", {{"cpu.hpp", kLiveHdrCpu}, {"fpu.hpp", kLiveHdrFpu}, {"vu.hpp", kLiveHdrVu}, {"memory.hpp", kLiveHdrMemory}, {"mmi.hpp", kLiveHdrMmi}, {"generated.hpp", kLiveHdrGenerated}, {"ee_live_abi.hpp", kLiveHdrEeLiveAbi}}))) {
+        if (error || !(g->headers = g->headers || lb::write_headers(g->cache / "include", {{"cpu.hpp", kLiveHdrCpu}, {"fpu.hpp", kLiveHdrFpu}, {"vu.hpp", kLiveHdrVu}, {"memory.hpp", kLiveHdrMemory}, {"mmi.hpp", kLiveHdrMmi}, {"generated.hpp", kLiveHdrGenerated}, {"ee_live_abi.hpp", kLiveHdrEeLiveAbi}, {"compat.hpp", kLiveHdrCompat}}))) {
             b.why = "cannot write into " + ps2::os::utf8(g->cache) + ": the game stops";
             return b;
         }
@@ -939,7 +939,7 @@ void start(ps2::span<const std::uint8_t> program, const std::string &cache, cons
     // The stamp says which libraries this runner may load: the translator, the headers, the flags and the program they were made for.
     std::uint64_t h = 0xCBF29CE484222325ull;
     h = lb::fnv(h, kGeneratorVersion, std::strlen(kGeneratorVersion));
-    for (const char *text : {kLiveHdrCpu, kLiveHdrFpu, kLiveHdrVu, kLiveHdrMemory, kLiveHdrMmi, kLiveHdrGenerated, kLiveHdrEeLiveAbi})
+    for (const char *text : {kLiveHdrCpu, kLiveHdrFpu, kLiveHdrVu, kLiveHdrMemory, kLiveHdrMmi, kLiveHdrGenerated, kLiveHdrEeLiveAbi, kLiveHdrCompat})
         h = lb::fnv(h, text, std::strlen(text));
     for (const std::string &f : g->flags)
         if (f.rfind("-O", 0) != 0) h = lb::fnv(h, f.data(), f.size() + 1);   // the level of optimisation does not change what a library computes
